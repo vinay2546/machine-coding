@@ -127,4 +127,43 @@ class VendingMachineTest {
         assertEquals(700, machine.getBalance());
         assertEquals(2, inventory.getQuantity("A1"));
     }
+
+    @Test
+    void successfulPurchaseCannotBeRepeatedWithoutNewSelection() {
+        machine.selectProduct("A1");
+        machine.insertMoney(1500);
+
+        assertEquals(PurchaseStatus.SUCCESS, machine.purchase().status());
+        assertEquals(PurchaseStatus.NO_PRODUCT_SELECTED, machine.purchase().status());
+        assertEquals(1, inventory.getQuantity("A1"));
+        assertEquals(0, machine.getBalance());
+    }
+
+    @Test
+    void moneyOverflowIsRejectedWithoutChangingExistingBalance() {
+        machine.insertMoney(Integer.MAX_VALUE);
+
+        assertThrows(ArithmeticException.class, () -> machine.insertMoney(1));
+        assertEquals(Integer.MAX_VALUE, machine.getBalance());
+    }
+
+    @Test
+    void inventoryAndProductListsAreImmutableSnapshots() {
+        assertThrows(UnsupportedOperationException.class,
+                () -> machine.getProducts().clear());
+        assertThrows(UnsupportedOperationException.class,
+                () -> machine.getInventory().clear());
+        assertEquals(2, inventory.getQuantity("A1"));
+    }
+
+    @Test
+    void rejectsInvalidProductAndInventoryInput() {
+        assertThrows(IllegalArgumentException.class, () -> new Product("", "Water", 100));
+        assertThrows(IllegalArgumentException.class, () -> new Product("A2", " ", 100));
+        assertThrows(IllegalArgumentException.class, () -> new Product("A3", "Water", 0));
+        assertThrows(IllegalArgumentException.class,
+                () -> inventory.addProduct(new Product("A1", "Duplicate", 100), 1));
+        assertThrows(IllegalArgumentException.class,
+                () -> inventory.addProduct(new Product("C1", "Soda", 100), -1));
+    }
 }
