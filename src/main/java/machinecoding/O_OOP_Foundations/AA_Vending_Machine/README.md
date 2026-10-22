@@ -116,7 +116,7 @@ Your task:
 
 ### Stage 5 — Implement the core flow (22–42 minutes)
 
-Implement the smallest complete version in `Solution.java`.
+Implement the smallest complete version across the focused classes in this folder. Keep `Solution.java` as the runnable demonstration.
 
 Suggested order:
 1. Represent products and their prices.
@@ -249,4 +249,4 @@ Use this section during practice.
 - [ ] Explain design choices and trade-offs.
 - [ ] Review against the interview evaluation rubric.
 
-Implement the problem in `Solution.java`. This repository intentionally contains placeholders only.
+The reference implementation is split across focused Java classes in this folder. `Solution.java` is a runnable demonstration, `DESIGN.md` documents the API decisions, and `VendingMachineTest` covers core behaviour and edge cases.

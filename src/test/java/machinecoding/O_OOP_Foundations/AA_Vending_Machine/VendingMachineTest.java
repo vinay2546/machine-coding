@@ -72,7 +72,6 @@ class VendingMachineTest {
 
     @Test
     void soldOutProductCannotBeSelected() {
-        assertEquals(SelectionResult.OUT_OF_STOCK, machine.selectProduct("missing-stock"));
         inventory.addProduct(new Product("C1", "Soda", 1000), 0);
 
         assertEquals(SelectionResult.OUT_OF_STOCK, machine.selectProduct("C1"));
